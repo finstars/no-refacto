@@ -4,43 +4,43 @@ export class TakeHomeCalculator {
   constructor(percent: number) {
     this.percent = percent;
   }
-
+  
   netAmount(
-    first: Pair<number, string>,
-    ...rest: Pair<number, string>[]
-  ): Pair<number, string> {
-    let pairs: Pair<number, string>[] = Array.from(rest);
+    first: Money,
+    ...rest: Money[]
+  ): Money {
+    let pairs: Money[] = Array.from(rest);
 
-    let total: Pair<number, string> = first;
+    let total: Money = first;
 
     for (let next of pairs) {
-      if (next.second != total.second) {
+      if (next.currency != total.currency) {
         throw new Incalculable();
       }
     }
 
     for (let next of pairs) {
-      total = new Pair<number, string>(total.first + next.first, next.second);
+      total = new Money(total.amount + next.amount, next.currency);
     }
 
-    let amount: number = total.first * (this.percent / 100);
-    let tax = new Pair<number, string>(amount, first.second);
+    let amount: number = total.amount * (this.percent / 100);
+    let tax = new Money(amount, first.currency);
 
-    if (total.second == tax.second) {
-      return new Pair<number, string>(total.first - tax.first, first.second);
+    if (total.currency == tax.currency) {
+      return new Money(total.amount - tax.amount, first.currency);
     } else {
       throw new Incalculable();
     }
   }
 }
 
-export class Pair<A, B> {
-  first: A;
-  second: B;
+export class Money {
+  amount: number;
+  currency: string;
 
-  constructor(first: A, second: B) {
-    this.first = first;
-    this.second = second;
+  constructor(amount: number, currency: string) {
+    this.amount = amount;
+    this.currency = currency;
   }
 }
 
