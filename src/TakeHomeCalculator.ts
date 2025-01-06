@@ -15,22 +15,16 @@ export class TakeHomeCalculator {
 
     for (let next of pairs) {
       if (next.currency != total.currency) {
-        throw new Incalculable();
+        throw new Incalculable("Cannot sum different currencies");
       }
-    }
 
-    for (let next of pairs) {
       total = new Money(total.amount + next.amount, next.currency);
     }
 
     let amount: number = total.amount * (this.percent / 100);
     let tax = new Money(amount, first.currency);
 
-    if (total.currency == tax.currency) {
-      return new Money(total.amount - tax.amount, first.currency);
-    } else {
-      throw new Incalculable();
-    }
+    return new Money(total.amount - tax.amount, first.currency);
   }
 }
 

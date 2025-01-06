@@ -2,11 +2,6 @@ import { Incalculable, Money, TakeHomeCalculator } from './TakeHomeCalculator';
 
 describe('TakeHomeCalculator', function () {
   it('can calculate tax', () => {
-    // initiliase object
-    // setTaxPercentage(10)
-    // addCurrencyValues()
-    // netAmount()
-
     let amount = new TakeHomeCalculator(10).netAmount(
       new Money(40, 'GBP'),
       new Money(50, 'GBP'),
@@ -23,5 +18,21 @@ describe('TakeHomeCalculator', function () {
         new Money(50, 'USD')
       )
     ).toThrow(Incalculable);
+  });
+
+  it('calculate tax', () => {
+    let amount = new TakeHomeCalculator(10).netAmount(
+      new Money(40, 'USD')
+    ).amount;
+
+    expect(amount).toEqual(36);
+  });
+
+  it('calculate tax out of one value passed', () => {
+    let amount = new TakeHomeCalculator(10).netAmount(
+      new Money(40, 'USD')
+    ).amount;
+
+    expect(amount).toEqual(36);
   });
 });
